@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
+import BlogsDisplay from './components/BlogsDisplay'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -18,8 +22,14 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const localUser = window.localStorage.getItem('User');
-    setUser(JSON.parse(localUser))
+    const localUser = JSON.parse(window.localStorage.getItem('User'));
+
+    if(localUser){
+      setUser(localUser)
+      blogService.setToken(localUser.token)
+
+    }
+    
   }, [])
 
 
@@ -33,6 +43,7 @@ const App = () => {
       console.log(currentUser)
       window.localStorage.setItem('User', JSON.stringify(currentUser))
       setUser(currentUser)
+      blogService.setToken(currentUser.token)
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -47,50 +58,39 @@ const App = () => {
     window.localStorage.removeItem('User');
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-    <div>
-      username
-        <input
-        type="text"
-        value={username}
-        name="Username"
-        onChange={({target}) => setUsername(target.value)}
-        />
-    </div>
+  const handleUser = (e) => {
+    setUsername(e.target.value);
+  }
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
+  const handleInput = (e) => {
+    const key = e.target.name
+    setNewBlog({...newBlog, [key]: e.target.value})
+  }
 
-    <div>
-      password
-        <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={({target}) => setPassword(target.value)}
-        />
-    </div>
-    
-    <button type="submit">login</button>
-  </form>
-  )
-  const blogsDisplay = () => (
-    <div>
-    <h2>blogs</h2>
-    <p>{user.name} logged in</p>
-    <button type="button" onClick={handleLogout}>logout</button>
-     {
-      blogs.map( blog =>
-        <Blog key={blog.id} blog={blog}/>) 
-     } 
-    </div>
-   
-    )
   
-  
+ 
+  console.log('render app')
   return (
     <div>
-      {user === null ? loginForm() :
-     blogsDisplay()}
-      
+     <LoginForm
+     user={user}
+     username={username} 
+     password={password}
+     handlePassword={handlePassword}
+     handleUser={handleUser}
+     handleLogin={handleLogin}
+     blogService={blogService} /> 
+
+     <BlogsDisplay
+     user={user}
+     newBlog={newBlog}
+     blogs={blogs}
+     handleLogout={handleLogout}
+     handleInput={handleInput}
+     blogService={blogService}
+    /> 
     </div>
   )
 }
