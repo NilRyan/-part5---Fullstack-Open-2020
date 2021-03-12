@@ -3,6 +3,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogsDisplay from './components/BlogsDisplay'
+import Notifications from './components/Notications'
+import Error from './components/Error'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,6 +16,8 @@ const App = () => {
     author: '',
     url: ''
   })
+  const [notification, setNotification] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -46,7 +50,15 @@ const App = () => {
       blogService.setToken(currentUser.token)
       setUsername('')
       setPassword('')
+      setNotification(`login success`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000)
     } catch (exception) {
+      setErrorMessage(`failed to login ${exception.message}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
       console.log(exception)
     }
   }
@@ -69,12 +81,41 @@ const App = () => {
     setNewBlog({...newBlog, [key]: e.target.value})
   }
 
-  
+  const handleSubmittedBlog = (submittedBlog) => {
+    if(submittedBlog) {
+      setNewBlog({
+        title: '',
+        author: '',
+        url: ''
+      })
+      setNotification(`success added ${submittedBlog.title} by ${submittedBlog.author}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000)
+    }
+  }
+  const handleError = (exception) => {
+    setErrorMessage(`failed to create new blog ${exception.message}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+  }
  
-  console.log('render app')
+  
   return (
     <div>
-     <LoginForm
+    <Error errorMessage={errorMessage} />
+    <Notifications notification={notification} />
+    <BlogsDisplay
+     user={user}
+     newBlog={newBlog}
+     blogs={blogs}
+     handleLogout={handleLogout}
+     handleInput={handleInput}
+     handleSubmittedBlog={handleSubmittedBlog}
+     handleError={handleError}
+    /> 
+    <LoginForm
      user={user}
      username={username} 
      password={password}
@@ -82,15 +123,6 @@ const App = () => {
      handleUser={handleUser}
      handleLogin={handleLogin}
      blogService={blogService} /> 
-
-     <BlogsDisplay
-     user={user}
-     newBlog={newBlog}
-     blogs={blogs}
-     handleLogout={handleLogout}
-     handleInput={handleInput}
-     blogService={blogService}
-    /> 
     </div>
   )
 }
