@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Toggable from './Togglable'
 import blogService from '../services/blogs'
-const Blog = ({ blog}) => {
+const Blog = ({ blog, user}) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -21,8 +21,13 @@ const Blog = ({ blog}) => {
       }
     ) 
   }, [like])
-  const handleLike = async () => {
+  const handleLike = () => {
     setLike(like + 1);
+  }
+  const handleRemove = async () => {
+    if(window.confirm(`Would you really like to delete ${blog.title} by ${blog.author}?`)){
+      blogService.deleteBlog(blog.id);
+    }
   }
 
 return (
@@ -37,6 +42,11 @@ return (
     {like} <button onClick={handleLike}>like</button>
     </div>
     {blog?.user?.name}
+    { blog.user.name === user.name ?
+      <button onClick={handleRemove}>remove</button>
+      : null
+    }
+    
     </Toggable>
   </div>
 )
