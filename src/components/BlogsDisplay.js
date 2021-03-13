@@ -31,10 +31,9 @@ const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleLog
          handleSubmitBlog={handleSubmitBlog}
          handleInput={handleInput}
          newBlog={newBlog}
-          />
+        />
         </Toggable>
         
-
         {
           blogs.map( blog =>
             <Blog key={blog.id} blog={blog}/>) 
