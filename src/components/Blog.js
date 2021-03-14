@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Toggable from './Togglable'
+import Togglable from './Togglable'
 import blogService from '../services/blogs'
 const Blog = ({ blog, user}) => {
   const blogStyle = {
@@ -36,7 +36,7 @@ return (
     {blog.title} {blog.author}
     </div>
   
-    <Toggable buttonLabel="view" hideLabel="hide">
+    <Togglable buttonLabel="view" hideLabel="hide">
     {blog.url}
     <div>
     {like} <button onClick={handleLike}>like</button>
@@ -47,7 +47,7 @@ return (
       : null
     }
     
-    </Toggable>
+    </Togglable>
   </div>
 )
 }
