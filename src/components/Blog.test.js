@@ -5,8 +5,10 @@ import Blog from './Blog';
 
 describe('Blog', () => {
   let component
+  let blog
+  let user
   beforeEach( () => {
-    const blog = {
+    blog = {
       title: "hahaha",
       author: "gsa",
       url: "safa.com",
@@ -19,21 +21,21 @@ describe('Blog', () => {
       id: "604b6f22d5002721fe9cffd9"
     };
 
-  const user = {
+  user = {
     username: "neil",
     name: "Neil Ryan",
     id: "6046dfe700dcb32851e71bd7"
   }
    
-    component = render(
-        <Blog
-          blog={blog}
-          user={user} 
-        />
-    )
   })
   test('renders the blog\'s title and author, but not its url or number of likes', () => {
-  
+    
+    component = render(
+      <Blog
+        blog={blog}
+        user={user} 
+      />
+  )
     const url = component.container.querySelector('.url')
     const likes = component.container.querySelector('.likes')
     
@@ -48,6 +50,13 @@ describe('Blog', () => {
   })
   
   test('renders the blog\'s likes and url when button is clicked', () => {
+    component = render(
+      <Blog
+        blog={blog}
+        user={user} 
+      />
+  )
+    
     const view = component.getByText('view');
     fireEvent.click(view);
 
@@ -56,12 +65,27 @@ describe('Blog', () => {
    
     expect(url).toBeVisible()
     expect(likes).toBeVisible()
-
-
-
   })
 
+  test('like', () => {
+    const handleLike = jest.fn()
+    
+    component = render(
+      <Blog
+        blog={blog}
+        user={user}
+        handleLike={handleLike}
+      />
+  )
+  const view = component.getByText('view');
+    fireEvent.click(view);
 
-
+  
+  const likes = component.container.querySelector('.likes');
+    fireEvent.click(likes);
+    fireEvent.click(likes);
+    
+    expect(handleLike.mock.calls.length).toBe(2);
+  })
 
 })

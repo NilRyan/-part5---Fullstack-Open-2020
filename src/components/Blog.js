@@ -42,8 +42,8 @@ return (
     <div className="url">
      {blog.url}
     </div>
-    <div className="likes">
-      {like} <button onClick={handleLike}>like</button>
+    <div >
+      {like} <button className="likes" onClick={handleLike}>like</button>
     </div>
     {blog?.user?.name}
     { blog.user.name === user.name ?
