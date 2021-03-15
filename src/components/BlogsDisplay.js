@@ -51,9 +51,9 @@ const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleLog
   }
 
 BlogsDisplay.propTypes = {
-  handleError: PropTypes.func.isRequired,
-  handleSubmittedBlog: PropTypes.func.isRequired,
-  handleLogout: PropTypes.func.isRequired,
+  handleError: PropTypes.func,
+  handleSubmittedBlog: PropTypes.func,
+  handleLogout: PropTypes.func,
   blogs: PropTypes.array,
   user: PropTypes.object,
 

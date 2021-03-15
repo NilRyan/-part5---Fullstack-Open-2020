@@ -36,10 +36,14 @@ return (
     {blog.title} {blog.author}
     </div>
   
-    <Togglable buttonLabel="view" hideLabel="hide">
-    {blog.url}
-    <div>
-    {like} <button onClick={handleLike}>like</button>
+    <Togglable 
+      buttonLabel="view" 
+      hideLabel="hide">
+    <div className="url">
+     {blog.url}
+    </div>
+    <div className="likes">
+      {like} <button onClick={handleLike}>like</button>
     </div>
     {blog?.user?.name}
     { blog.user.name === user.name ?
