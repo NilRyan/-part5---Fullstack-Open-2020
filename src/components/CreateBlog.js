@@ -5,7 +5,8 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           <h1>create new</h1>
           <div>
             title:
-              <input 
+              <input
+              id='title'
               type="text"
               name="title"
               value={newBlog.title} 
@@ -15,6 +16,7 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           <div>
           author:
               <input 
+              id='author'
               type="text" 
               name="author"
               value={newBlog.author} 
@@ -23,7 +25,8 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           </div>
           <div>
           url:
-              <input 
+              <input
+              id='url' 
               type="text"
               name="url" 
               value={newBlog.url} 
