@@ -1,10 +1,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Blog from './Blog';
 
-test('renders the blog\'s title and author, but not its url or number of likes', () => {
-  const blog = {
+describe('Blog', () => {
+  let component
+  beforeEach( () => {
+    const blog = {
       title: "hahaha",
       author: "gsa",
       url: "safa.com",
@@ -23,23 +25,43 @@ test('renders the blog\'s title and author, but not its url or number of likes',
     id: "6046dfe700dcb32851e71bd7"
   }
    
-
-  const component = render(
-      <Blog
-        blog={blog}
-        user={user} 
-      />
+    component = render(
+        <Blog
+          blog={blog}
+          user={user} 
+        />
     )
+  })
+  test('renders the blog\'s title and author, but not its url or number of likes', () => {
   
-  const url = component.container.querySelector('.url')
-  const likes = component.container.querySelector('.likes')
+    const url = component.container.querySelector('.url')
+    const likes = component.container.querySelector('.likes')
+    
+    expect(url).not.toBeVisible()
+    expect(likes).not.toBeVisible()
+    
+    expect(component.container).toHaveTextContent(
+        'hahaha')
+    expect(component.container).toHaveTextContent(
+      'gsa')
   
-  expect(url).not.toBeVisible()
-  expect(likes).not.toBeVisible()
+  })
   
-  expect(component.container).toHaveTextContent(
-      'hahaha')
-  expect(component.container).toHaveTextContent(
-    'gsa')
+  test('renders the blog\'s likes and url when button is clicked', () => {
+    const view = component.getByText('view');
+    fireEvent.click(view);
+
+    const url = component.container.querySelector('.url')
+    const likes = component.container.querySelector('.likes')
+   
+    expect(url).toBeVisible()
+    expect(likes).toBeVisible()
+
+
+
+  })
+
+
+
 
 })

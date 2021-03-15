@@ -47,7 +47,7 @@ return (
     </div>
     {blog?.user?.name}
     { blog.user.name === user.name ?
-      <button onClick={handleRemove}>remove</button>
+      <button onClick={handleRemove} className="remove">remove</button>
       : null
     }
     
