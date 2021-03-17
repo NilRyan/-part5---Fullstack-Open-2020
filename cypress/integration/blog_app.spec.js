@@ -24,6 +24,15 @@ describe('Blog app', function() {
       cy.getBySel('username').type('neil');
       cy.getBySel('password').type('bagsak');
       cy.contains('login').click();
+      cy.contains('login success')
+    })
+
+    it('fails with wrong credentials', function () {
+      cy.getBySel('username').type('ssss');
+      cy.getBySel('password').type('sssss');
+      cy.contains('login').click();
+      cy.contains('failed to login')
+
     })
   })
 })
