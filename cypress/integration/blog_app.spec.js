@@ -40,9 +40,15 @@ describe('Blog app', function() {
   describe('When logged in', function () {
     beforeEach(function () {
       cy.login({ username: 'neil', password: 'bagsak'})
+      cy.createBlog({
+        title: 'Mr. Pogi',
+        author: 'Hercule',
+        url: 'dbz.com',
+        likes: 0
+      })
     })
 
-    it.only('A blog can be created', function() {
+    it('A blog can be created', function() {
       cy.contains('create new').click()
       cy.getBySel('title').type('Hello')
       cy.getBySel('author').type('Adelle')
@@ -53,5 +59,12 @@ describe('Blog app', function() {
       cy.visit('http://localhost:3000')
       cy.contains('Hello Adelle')
     })
+
+    it.only('A blog can be liked', function() {
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('1')
+    })
+
   })
 })
