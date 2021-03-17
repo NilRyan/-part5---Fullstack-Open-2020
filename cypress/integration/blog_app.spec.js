@@ -1,12 +1,18 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
-    const user = {
+    const user1 = {
       name: 'Neil Ryan',
       username: 'neil',
       password: 'bagsak'
     }
-    cy.request('POST', 'http://localhost:3001/api/users', user)
+    const user2 = {
+      name: 'Ryan',
+      username: 'ryan',
+      password: 'pasado'
+    }
+    cy.request('POST', 'http://localhost:3001/api/users', user1)
+    cy.request('POST', 'http://localhost:3001/api/users', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -60,11 +66,29 @@ describe('Blog app', function() {
       cy.contains('Hello Adelle')
     })
 
-    it.only('A blog can be liked', function() {
+    it('A blog can be liked', function() {
       cy.contains('view').click()
       cy.contains('like').click()
       cy.contains('1')
     })
+
+    it('A blog can be deleted by creator', function() {
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.visit('http://localhost:3000')
+      cy.contains('Mr. Pogi').should('not.exist')
+
+    })
+
+    it.only('A blog can only be deleted by creator', function() {
+      cy.contains('logout').click()
+      cy.login({ username: 'ryan', password: 'pasado'})
+      cy.contains('view').click()
+      cy.contains('remove').should('not.exist')
+      
+
+    })
+
 
   })
 })
