@@ -8,6 +8,7 @@ const LoginForm = ({ user, username, password, handleLogin, handleUser, handlePa
     <div>
       username
         <input
+        data-test="username"
         key="username"
         autoComplete="username"
         type="text"
@@ -20,6 +21,7 @@ const LoginForm = ({ user, username, password, handleLogin, handleUser, handlePa
     <div>
       password
         <input
+        data-test="password"
         key="password"
         autoComplete="current-password"
         type="password"
