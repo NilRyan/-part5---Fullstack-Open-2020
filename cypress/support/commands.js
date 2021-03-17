@@ -30,3 +30,12 @@ Cypress.Commands.add("getBySel", (selector, ...args) => {
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
   return cy.get(`[data-test*=${selector}]`, ...args);
 });
+
+Cypress.Commands.add('login', ({ username, password }) => {
+  cy.request('POST', 'http://localhost:3001/api/login', {
+    username, password
+  }).then(({ body }) => {
+    localStorage.setItem('User', JSON.stringify(body))
+    cy.visit('http://localhost:3000')
+  })
+})

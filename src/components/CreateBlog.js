@@ -6,6 +6,7 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           <div>
             title:
               <input
+              data-test="title"
               id='title'
               type="text"
               name="title"
@@ -16,6 +17,7 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           <div>
           author:
               <input 
+              data-test="author"
               id='author'
               type="text" 
               name="author"
@@ -26,6 +28,7 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
           <div>
           url:
               <input
+              data-test="url"
               id='url' 
               type="text"
               name="url" 
@@ -33,7 +36,7 @@ const CreateBlog = ({handleSubmitBlog, handleInput, newBlog}) => {
               onChange={handleInput}>
               </input>
           </div>
-          <button type="submit">create</button>
+          <button data-test="create" type="submit">create</button>
         </form>
   )
 }

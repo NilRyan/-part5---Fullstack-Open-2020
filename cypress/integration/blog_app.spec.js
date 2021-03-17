@@ -20,6 +20,7 @@ describe('Blog app', function() {
   })
 
   describe('Login', function () {
+    
     it('succeeds with correct credentials', function () {
       cy.getBySel('username').type('neil');
       cy.getBySel('password').type('bagsak');
@@ -33,6 +34,24 @@ describe('Blog app', function() {
       cy.contains('login').click();
       cy.contains('failed to login')
 
+    })
+  })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'neil', password: 'bagsak'})
+    })
+
+    it.only('A blog can be created', function() {
+      cy.contains('create new').click()
+      cy.getBySel('title').type('Hello')
+      cy.getBySel('author').type('Adelle')
+      cy.getBySel('url').type('Hello.com')
+      cy.getBySel('create').click()
+
+      cy.contains('Hello by Adelle')
+      cy.visit('http://localhost:3000')
+      cy.contains('Hello Adelle')
     })
   })
 })
