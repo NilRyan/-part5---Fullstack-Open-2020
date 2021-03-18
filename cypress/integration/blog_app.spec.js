@@ -80,15 +80,63 @@ describe('Blog app', function() {
 
     })
 
-    it.only('A blog can only be deleted by creator', function() {
+    it('A blog can only be deleted by creator', function() {
       cy.contains('logout').click()
       cy.login({ username: 'ryan', password: 'pasado'})
       cy.contains('view').click()
       cy.contains('remove').should('not.exist')
-      
 
+    })
+  })
+
+  describe('Blog display', function () {
+    beforeEach(function () {
+      cy.login({ username: 'neil', password: 'bagsak'})
+      cy.createBlog({
+        title: 'Third',
+        author: 'Hercule',
+        url: 'dbz.com',
+        likes: 0
+      })
+      cy.createBlog({
+        title: 'First',
+        author: 'He',
+        url: 'dbzz.com',
+        likes: 3
+      })
+      cy.createBlog({
+        title: 'Second',
+        author: 'Her',
+        url: 'dbsz.com',
+        likes: 2
+      })
+      
+      cy.visit('http://localhost:3000')
+    })
+
+  it.only('Blogs are sorted by number of likes', function() {
+    
+    cy.get('.blogs').then( items => {
+      expect(items[0]).to.contain.text('First')
+      expect(items[1]).to.contain.text('Second')
+      expect(items[2]).to.contain.text('Third')
+    })
+
+    cy.createBlog({
+      title: 'Champion',
+      author: 'He',
+      url: 'dbzz.com',
+      likes: 99
+    })
+
+    cy.get('.blogs').then( items => {
+      expect(items[0]).to.contain.text('Champion')
+      expect(items[1]).to.contain.text('First')
+      expect(items[2]).to.contain.text('Second')
+      expect(items[3]).to.contain.text('Third')
     })
 
 
+  })
   })
 })

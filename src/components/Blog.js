@@ -31,7 +31,7 @@ const Blog = ({ blog, user}) => {
   }
 
 return (
-  <div style={blogStyle}>
+  <div style={blogStyle} className="blogs">
     <div>
     {blog.title} {blog.author}
     </div>
